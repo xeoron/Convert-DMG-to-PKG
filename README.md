@@ -11,10 +11,10 @@ appVersion
 ===============
 	Tells you the version of a Application stored in the Applications folder.
 
-app2pkg
+app2pkg: not usable yet
 ===============
 	Converts an app program to pkg MDM friendly deplpoyment installer format.
 
-dmg2pkg
+dmg2pkg: not usable yet
 ===============
 	Will convert a dmg installer to a pkg MDM friendly deplpoyment installer format
