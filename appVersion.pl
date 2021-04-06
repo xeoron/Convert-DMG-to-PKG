@@ -3,7 +3,9 @@
 # Author: Jason Campisi
 # Date: 4/6/2021
 # Purpose: Tells you the version of a MacOS app installed in Applications folder
+# Repository: https://github.com/xeoron/Manage_Mosyle_MDM_MacOS
 # License: Released under GPL v3 or higher. Details here http://www.gnu.org/licenses/gpl.html
+
 
 use strict;
 use Getopt::Long;
