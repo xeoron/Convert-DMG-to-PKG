@@ -11,7 +11,7 @@ use strict;
 use Getopt::Long;
 
 my ($app, $path, $help) = (0,"/Applications/",0);
-GetOptions("a:s"  =>\$app,"p:s"  =>\$path , "help" =>\$help);
+GetOptions("a:s"  =>\$app, "p:s" =>\$path, "help" =>\$help);
 
 sub check(){ # check required data or if help was called
   return if ($help || $app ne "0");
