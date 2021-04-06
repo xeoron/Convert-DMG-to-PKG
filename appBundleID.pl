@@ -9,11 +9,11 @@
 use strict;
 use Getopt::Long;
 
-my ($app, $help) = (0,0);
-GetOptions("a:s"  =>\$app, "help" =>\$help);
+my ($app, $help) = ("",0);
+GetOptions("a:s"  =>\$app, "help" =>\$help) or usage();
 
 sub check(){ # check required data or if help was called
-  return if ($help || $app ne "0");
+  return if ($help || $app ne "");
   print <<EOD;
 appBundleID Tells you what a MacOS Application Bundle Identifier ID is.
 Knowing this is useful MDM's for when converting DMG -> PKG files
@@ -28,7 +28,7 @@ org.videolan.vlc
 
 EOD
     exit 0;    
-}#end Check
+}#end usage
 
 
 check(); 

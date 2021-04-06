@@ -10,11 +10,11 @@
 use strict;
 use Getopt::Long;
 
-my ($app, $path, $help) = (0,"/Applications/",0);
-GetOptions("a:s"  =>\$app, "p:s" =>\$path, "help" =>\$help);
+my ($app, $path, $help) = ("","/Applications/",0);
+GetOptions("a:s"  =>\$app, "p:s" =>\$path, "help" =>\$help) or usage();
 
-sub check(){ # check required data or if help was called
-  return if ($help || $app ne "0");
+sub usage(){ # check required data or if help was called
+  return if ($help || $app ne "");
   print <<EOD;
 appVersion.pl Tells you the version of a MacOS app installed in Applications folder
 
@@ -30,9 +30,9 @@ Example: appVersion.pl -a VLC
 
 EOD
     exit 0;    
-}#end Check
+}#end Usage
 
-check(); 
+usage();
 
  my $r=`mdls -name kMDItemVersion "$path$app.app"`;
   $r =~ s/^kMDItemVersion = \"(.*)\"$/$1/g;  #harvest the app version number
