@@ -4,8 +4,8 @@ Manage Mosyle MDM MacOS Apps
 
 appBundleID
 ===============
-	Will tell you the Application Bundle Identifier of a installed App stored 
-    in the Applications folder.
+	Will tell you the Application Bundle Identifier of a installed App stored in the
+    Applications folder.
 
 appVersion 
 ===============
@@ -13,7 +13,7 @@ appVersion
 
 app2pkg
 ===============
-	Converts an app program to pkg MDM friendly deplpoyment installer format
+	Converts an app program to pkg MDM friendly deplpoyment installer format.
 
 dmg2pkg
 ===============
