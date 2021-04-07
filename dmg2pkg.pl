@@ -72,13 +72,14 @@ sub check(){ #varify data
        #gather app bundle ID and appversion number
        print " Harvest mode\n" if $verbose;
        do {
-        print " Name of the program to gather id and version info from? ";
-        my $appName = <STDIN>;
-            chomp $appName;
+         print " Name of the program to gather id and version info from? ";
+         my $appName = <STDIN>;
+          chomp $appName;
             
          #get app bundle id
          $id=`osascript -e 'id of app "$appName"'`;
           chomp $id;
+          
          #get app version number
          $ver=`mdls -name kMDItemVersion "/Applications/$appName.app"`;
           chomp $ver;
