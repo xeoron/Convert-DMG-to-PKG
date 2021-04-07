@@ -22,7 +22,7 @@ sub usage(){ # check required data or if help was called
 dmg2pkg.pl Converts mounted dmg install folders and convert them to a pkg installer 
     package for MDM deployment. 
 
-    Ussage:         dmg2pkg.pl -n VolumeNAME -v appVersion -s -i appBundleIdentifier path-to-save-Mac
+    Ussage:         dmg2pkg.pl -n VolumeNAME -v appVersion -s -i appBundleIdentifier path-to-save-MyMacApp
             
                     -n Name of mounted DMG Volume
                     -v Version The application encoded version number. Mke sure to sync this with the version you are 
@@ -56,35 +56,36 @@ EOD
     exit 0;    
 }#end usage
 
-sub check(){
-
-#temp debug code
-    if ($verbose){
-        print "temp debug code:\n";
-        print "  volume location = $volume\n";
-        print "  harvest appData = $harvest\n";
-        print "  id = $id\n";
-        print "  version = $ver\n";
-        print "  save location = $save\n";
-        print "  help = $help\n\n";
-    }
-#end temp debug code
+sub check(){ #varify data
 
    usage() if $help;
    usage() if ($volume eq ""); #check if Volume exists and format info
     $volume=~s/\\//g;  # remove forward slashs
     $volume=$vol . $volume if (not $volume =~ m/^$vol/); #add /volumes/ if not there so "foo" becomes /volumes/foo
     $volName=$1 if ($volume =~ m/^$vol(.*)\/$/); #harvest app name
-    print "Program Name: $volName\n" if $verbose;
+    print " Program Name: $volName\n" if $verbose;
     usage() if (not -d $volume); #does volume exist?
-    print "DMG Mounted Volume found: $volume\n" if $verbose;
+    print " DMG Mounted Volume found: $volume\n" if $verbose;
     
     #check the rest of the data if it is present to work with
    if ($harvest){
        #gather app bundle ID and appversion number
-       print "Harvest mode\n" if $verbose;
-       #ADD CODE HERE
-        
+       print " Harvest mode\n" if $verbose;
+       do {
+        my $appName = ask(" Name of the program to gather id and version info from? ");
+            chomp $appName;
+            
+         #get app bundle id
+         $id=`osascript -e 'id of app "$appName"'`;
+          chomp $id;
+         #get app version number
+         $ver=`mdls -name kMDItemVersion "/Applications/$appName.app"`;
+          chomp $ver;
+          $ver =~ s/^kMDItemVersion = \"(.*)\"$/$1/g;  #harvest the app version number
+         
+         print"  AppName is $appName\n  ID is $id\n  Version is $ver\n"; # if $verbose;
+       } while (askTF("Do you want to use this data? [Yes/No]: ")); 
+       
    }else{
        usage() if ($ver eq "") and ($id eq "");
     
@@ -93,19 +94,26 @@ sub check(){
 
 }#end check
 
+sub ask($){                #ask the user a question. Parameters = $message
+  my($msg) = @_; my $answer = "";
+  print $msg;
+  return $answer=<STDIN>;
+}#end ask($)
+
+sub askTF($){                #ask user question returning True/False. Parameters = $message
+  my($msg) = @_; my $answer = "";
+  
+  print $msg;
+  until(($answer=<STDIN>)=~m/^(n|y|no|yes)/i){ print"$msg"; }
+
+ return $answer=~m/[n|no]/i;# ? 1 : 0 	 bool value of T/F
+}#end askTF($)
+
+#### MAIN ####
+print " Welcome to dmg2pkg\n ...Checking all the data is in order...\n" if $verbose;
 check();
+print " Compiling...." if ($verbose);
 
-<<END 
-pkgbuild --root /Volumes/dmgNAME --version 1.1 --identifier com.example.sample --install-location / Sample-1.1.pkg
+system("pkgbuild --root \"$volume\" --version $ver --identifier $id --install-location / $save-$ver.pkg");
 
-Parameters Explained
-/Volumes/DMGName The full path to the mounted DMG file.
-
-version The application version, make sure to sync this with the version you are trying to deploy (if it’s Zoom 5.6, then this parameter is 5.6).
-
-identifier The app identifier, if you don’t know the value, follow this guide (The Bundle ID is what you are looking for) to get it.
-
-install-location The location where the PKG will be installed, leave it as it is.
-
-Sample-1.0.pkg The full path and name of the PKG file that will be generated, adjust it as needed.
-END
+exit 0;
