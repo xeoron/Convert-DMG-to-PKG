@@ -13,8 +13,9 @@ appVersion
 
 app2pkg: not usable yet
 ===============
-	Will convert an app program installed in /Applications/ to the pkg installer format
-    this making it a MDM deplpoyment installer that will work with Mosyle.
+	Converts an app program installed in /Applications/ to the pkg installer format
+    making it a MDM deplpoyment installer that will work with Mosyle.
+    This is a front end to productbuild to make the process less painful.
 
 dmg2pkg
 ===============
