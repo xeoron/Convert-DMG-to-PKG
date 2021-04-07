@@ -72,7 +72,8 @@ sub check(){ #varify data
        #gather app bundle ID and appversion number
        print " Harvest mode\n" if $verbose;
        do {
-        my $appName = ask(" Name of the program to gather id and version info from? ");
+        print " Name of the program to gather id and version info from? ";
+        my $appName = <STDIN>;
             chomp $appName;
             
          #get app bundle id
@@ -93,12 +94,6 @@ sub check(){ #varify data
    usage() if ($save eq "");
 
 }#end check
-
-sub ask($){                #ask the user a question. Parameters = $message
-  my($msg) = @_; my $answer = "";
-  print $msg;
-  return $answer=<STDIN>;
-}#end ask($)
 
 sub askTF($){                #ask user question returning True/False. Parameters = $message
   my($msg) = @_; my $answer = "";
