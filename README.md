@@ -19,3 +19,4 @@ app2pkg: not usable yet
 dmg2pkg
 ===============
 	Converts a mounted dmg installer file to a pkg MDM deplpoyment installer format to work with Mosyle.
+    This is a front end to pkgbuild to make the process less painful.
