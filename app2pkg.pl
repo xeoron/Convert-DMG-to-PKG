@@ -75,7 +75,7 @@ sub findApp(){
          $appPick=$applist[$appNumber];
 
          print"    ~ AppName $appNumber is $appPick\n";
-       } while (askTF("      Does this info look correct? [Yes/No]: ")); 
+    } while (askTF("      Does this info look correct? [Yes/No]: ")); 
        
        $path="/Applications/$appPick";
        #Create package build name 
@@ -84,7 +84,6 @@ sub findApp(){
          $ver =~ s/^kMDItemVersion = \"(.*)\"$/$1/g;
          $appPick =~s/\.app$//i;
         $create = "$appPick-$ver.pkg";
-       
 }#end findApp()
 
 
@@ -95,6 +94,6 @@ findApp();
  if ($dryrun){
     print " Compile command:\n  sudo productbuild --component$path $create\n";
  }else{
-    print "~~~~############ alpha.... build will fail! ############~~~~\n";
-    system ("sudo productbuild --component$path /Users/twilight/Downloads/$create");
+    print "~~~~############ Alpha Code.... build will fail! ############~~~~\n";
+    system ("sudo productbuild --component$path $create");
  }
