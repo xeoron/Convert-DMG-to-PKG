@@ -126,7 +126,7 @@ sub check(){ #varify data
     }else{
         if ($ver eq ""){ warn "-v App Version not provided\n\n"; exit 1; }
         if ($id eq ""){ warn "-i App Bundle ID not provided\n\n"; exit 1; }
-        if ($create eq ""){ warn "Name of package to create was not provided\n\n"; exit 1; }
+        if ($create eq ""){ warn "-c Name of package to create was not provided\n\n"; exit 1; }
         elsif ($create =~m/\.pkg$/){ $create =~s/\.pkg$//; } #strip extension???
     }
 }#end check()
