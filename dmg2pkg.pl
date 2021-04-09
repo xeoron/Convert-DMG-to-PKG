@@ -41,7 +41,7 @@ dmg2pkg.pl Converts mounted dmg install folders and convert them to a pkg instal
                     -verbose
                     -dr Dry run mode. It will confirm everything and not try to build anything.
                     -l list the installed Applications found in /Applications/
-                    -sort List of Applications sorted by name and not length of name
+                    -sort List of Applications sorted alphanumerically.
                     -a AppData...gather the required app version number and bundle id info automaticly.
                         This displays a list of installed apps and asks you which one is the target.
                         -c is optional, because it will harvest that information out of /Applications/
@@ -141,10 +141,10 @@ sub askTF($){                #ask user question returning True/False. Parameters
 }#end askTF($)
 
 sub getAppList(){ #grab App list, sort and print
-my @list=sort(`ls /Applications/`); 
- foreach ( @list ) {  $_=~s/[\n|\r]?$//; } #strip out \n & \r chars
- if (!$sortAlpha){ @applist = sort { length $a <=> length $b } @list; } #sort by length
- else { @applist = @list;}
+my @alist=sort(`ls /Applications/`); 
+ foreach ( @alist ) {  $_=~s/[\n|\r]?$//; } #strip out \n & \r chars
+ if (!$sortAlpha){ @applist = sort { length $a <=> length $b } @alist; } #sort by length
+ else { @applist = @alist;}
  
  my ($c, $pipe) =(0, "|");
   for my $app (@applist){
