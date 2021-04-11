@@ -2,7 +2,7 @@
 # Name: dmg2pkg.pl
 # Author: Jason Campisi
 # Date: 4/9/2021
-# Version: 1.0
+# Version: 1.1
 # Purpose: Convert mounted dmg file into a pkg installer
 # Repository: https://github.com/xeoron/Manage_Mosyle_MDM_MacOS
 # License: Released under GPL v3 or higher. Details here http://www.gnu.org/licenses/gpl.html
@@ -12,7 +12,7 @@ use Getopt::Long;
 use Scalar::Util qw(looks_like_number);
 
 my ($volume, $ver, $id, $create, $volName)=("","","","",""); 
-my ($verbose, $help, $harvest, $list, $sortAlpha, $dryrun) = (0,0,0,0,0,0);
+my ($verbose, $help, $harvest, $list, $sortAlpha, $dryrun, $only) = (0,0,0,0,0,0,0);
 my @applist; #sorted application list
 my $appPick="";
 my $vol="/Volumes/";
@@ -20,7 +20,7 @@ my $vol="/Volumes/";
 GetOptions( "n=s" =>\$volume,  "v=s" =>\$ver,   "id=s" =>\$id,
             "c=s"  =>\$create, "help" =>\$help, "verbose" =>\$verbose,
             "a" =>\$harvest,   "l" =>\$list,    "sort" =>\$sortAlpha,
-            "dr" =>\$dryrun) or check();
+            "dr" =>\$dryrun,   "o" =>\$only) or check();
 
 sub usage(){ # check required data or if help was called
 
@@ -40,7 +40,8 @@ dmg2pkg.pl Converts mounted dmg install folders and convert them to a pkg instal
     Optional        -help
                     -verbose
                     -dr Dry run mode. It will confirm everything and not try to build anything.
-                    -l list the installed Applications found in /Applications/
+                    -l list what is installed Applications found in /Applications/
+                    -o Only list programs found in the Applications founder
                     -sort List of Applications sorted alphanumerically.
                     -a AppData...gather the required app version number and bundle id info automaticly.
                         This displays a list of installed apps and asks you which one is the target.
@@ -146,16 +147,28 @@ my @alist=sort(`ls /Applications/`);
  if (!$sortAlpha){ @applist = sort { length $a <=> length $b } @alist; } #sort by length
  else { @applist = @alist;}
  
- my ($c, $pipe) =(0, "|");
-  for my $app (@applist){
-     if (0 == $c % 2) { #if even number
-         printf("  %s %02d. %s ", $pipe, $c, $app ) if ($app ne "");
-         print "\n" if $c == $#applist; #final loop close the line
-     }else{
-         printf("%s %02d. %s\n", "or", $c, $app ) if ($app ne "");
-     }
-     $c++;
-  }
+ @applist = grep {/.?\.app$/i} @applist if($only); #only display files ending in .app
+ 
+ my ($c, $mid, $numSub, $pipe) =(0, 0, 2, "|");
+ my @groupsOfTwo;
+ #set mid count number
+    if (0 == $#applist % 2) { $mid = $#applist/2; } #if even number
+    else{ $mid = ($#applist+1)/2; } #else off number
+ 
+ #build AoA with rows of 2 columns
+ use List::MoreUtils 'natatime';
+    my $iter = natatime $numSub, @applist;
+    while (my @vals = $iter->()) { push @groupsOfTwo, \@vals; }
+
+ #display results
+    for my $row (@groupsOfTwo) {
+        format STDOUT =
+@<< @< @<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< @<< @< @<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        $c, $pipe, $row->[0], $mid, $pipe, $row->[1]
+.
+         write;
+         $c++; $mid++;
+      }
 }#end getAppList
 
 

@@ -2,7 +2,7 @@
 # Name: app2pkg.pl
 # Author: Jason Campisi
 # Date: 4/9/2021
-# Version 0.2 alpha
+# Version 0.3 alpha
 # Purpose: Convert installed apps in the Applications folder to a pkg installer
 # Repository: https://github.com/xeoron/Manage_Mosyle_MDM_MacOS
 # License: Released under GPL v3 or higher. Details here http://www.gnu.org/licenses/gpl.html
@@ -12,8 +12,9 @@ use strict;
 use Getopt::Long;
 use Scalar::Util qw(looks_like_number);
 my ($path, $create) = ("","");
-my ($list, $sortAlpha, $dryrun, $help)=(0, 0, 0, 0);
-GetOptions( "l" =>\$list, "sort" =>\$sortAlpha, "dr" =>\$dryrun, "help" =>\$help) or usage();
+my ($list, $sortAlpha, $dryrun, $only, $help)=(0, 0, 0, 0, 0);
+GetOptions( "l" =>\$list, "sort" =>\$sortAlpha, "dr" =>\$dryrun, 
+            "o" =>\$only, "help" =>\$help) or usage();
 
 my @applist; #sorted application list
 my $appPick="";
@@ -26,7 +27,8 @@ app2pkg.pl Convert installed apps in the Applications folder to a pkg installer
     Ussage:         app2pkg.pl 
     
     Optional        -help
-                    -l Only list applications install.
+                    -l list what is installed Applications found in /Applications/
+                    -o Only list programs found in the Applications founder
                     -sort Sort the applications list alphanumerically.
     Requirement:    install the app you want to harvest this data from
 
@@ -40,17 +42,28 @@ my @alist=sort(`ls /Applications/`);
  foreach ( @alist ) {  $_=~s/[\n|\r]?$//; } #strip out \n & \r chars
  if (!$sortAlpha){ @applist = sort { length $a <=> length $b } @alist; } #sort by length
  else { @applist = @alist;}
+ @applist = grep {/.?\.app$/i} @applist if($only); #only display files ending in .app
  
- my ($c, $pipe) =(0, "|");
-  for my $app (@applist){
-     if (0 == $c % 2) { #if even number
-         printf("  %s %02d. %s ", $pipe, $c, $app ) if ($app ne "");
-         print "\n" if $c == $#applist; #final loop close the line
-     }else{
-         printf("%s %02d. %s\n", "or", $c, $app ) if ($app ne "");
-     }
-     $c++;
-  }
+ my ($c, $mid, $numSub, $pipe) =(0, 0, 2, "|");
+ my @groupsOfTwo; 
+ #set mid count number
+    if (0 == $#applist % 2) { $mid = $#applist/2; } #if even number
+    else{ $mid = ($#applist+1)/2; } #else off number
+ 
+ #build AoA with rows of 2 columns
+ use List::MoreUtils 'natatime';
+    my $iter = natatime $numSub, @applist;
+    while (my @vals = $iter->()) { push @groupsOfTwo, \@vals; }
+
+ #display results
+    for my $row (@groupsOfTwo) {
+        format STDOUT =
+@<< @< @<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< @<< @< @<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        $c, $pipe, $row->[0], $mid, $pipe, $row->[1]
+.
+         write;
+         $c++; $mid++;
+      }
 }#end getAppList
 
 sub askTF($){                #ask user question returning True/False. Parameters = $message
