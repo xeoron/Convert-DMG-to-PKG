@@ -2,7 +2,7 @@
 # Name: app2pkg.pl
 # Author: Jason Campisi
 # Date: 4/9/2021
-# Version 0.3 alpha
+# Version 0.3.1 alpha
 # Purpose: Convert installed apps in the Applications folder to a pkg installer
 # Repository: https://github.com/xeoron/Manage_Mosyle_MDM_MacOS
 # License: Released under GPL v3 or higher. Details here http://www.gnu.org/licenses/gpl.html
@@ -27,8 +27,8 @@ app2pkg.pl Convert installed apps in the Applications folder to a pkg installer
     Ussage:         app2pkg.pl 
     
     Optional        -help
-                    -l list what is installed Applications found in /Applications/
-                    -o Only list programs found in the Applications founder
+                    -l list everything found in the folder /Applications/
+                    -o Only list programs found in the /Applications/ Applications folder.
                     -sort Sort the applications list alphanumerically.
     Requirement:    install the app you want to harvest this data from
 
@@ -101,7 +101,7 @@ sub findApp(){
 
 
 usage() if $help;
-if ($list){ getAppList(); exit 0;}
+if ($list or $only){ getAppList(); exit 0;}
 findApp();
 
  if ($dryrun){

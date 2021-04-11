@@ -2,7 +2,7 @@
 # Name: dmg2pkg.pl
 # Author: Jason Campisi
 # Date: 4/9/2021
-# Version: 1.1
+# Version: 1.1.1
 # Purpose: Convert mounted dmg file into a pkg installer
 # Repository: https://github.com/xeoron/Manage_Mosyle_MDM_MacOS
 # License: Released under GPL v3 or higher. Details here http://www.gnu.org/licenses/gpl.html
@@ -40,8 +40,8 @@ dmg2pkg.pl Converts mounted dmg install folders and convert them to a pkg instal
     Optional        -help
                     -verbose
                     -dr Dry run mode. It will confirm everything and not try to build anything.
-                    -l list what is installed Applications found in /Applications/
-                    -o Only list programs found in the Applications founder
+                    -l list everything found in the folder /Applications/
+                    -o Only list programs found in the /Applications/ Applications folder.
                     -sort List of Applications sorted alphanumerically.
                     -a AppData...gather the required app version number and bundle id info automaticly.
                         This displays a list of installed apps and asks you which one is the target.
@@ -61,7 +61,7 @@ dmg2pkg.pl Converts mounted dmg install folders and convert them to a pkg instal
 
 Examples:
   List the Apps in /Applications/
-    dmg2pkg.pl -l
+    dmg2pkg.pl -o
   
   Provide all the informaiton requred with vlc-3.0.12-intel64.dmg mounted file
     dmg2pkg.pl -n "/Volumes/VLC media player" -v 3.0.12 -id org.videolan.vlc -s -c VLC
@@ -78,7 +78,7 @@ EOD
 sub check(){ #varify data
  
    usage() if $help;
-   if ($list){getAppList(); exit 0; }   #display all /applications/
+   if ($list or $only){getAppList(); exit 0; }   #display all /applications/
    if ($volume eq ""){##check if Volume exists and format info
         warn " Warning: DMG Volume location not provided!\n\n";
         exit 1;
