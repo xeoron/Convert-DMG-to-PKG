@@ -15,7 +15,6 @@ my ($volume, $ver, $id, $create, $volName)=("","","","","");
 my ($verbose, $help, $harvest, $list, $sortAlpha, $dryrun, $only) = (0,0,0,0,0,0,0);
 my @applist; #sorted application list
 my $appPick="";
-my $vol="/Volumes/";
 
 GetOptions( "n=s" =>\$volume,  "v=s" =>\$ver,   "id=s" =>\$id,
             "c=s"  =>\$create, "help" =>\$help, "verbose" =>\$verbose,
@@ -126,8 +125,9 @@ sub check(){ #varify data
     }
     print " DMG Mounted Volume found: $volume\n" if ($verbose);
     $volume=~s/\\//g;  # remove forward slashs
-    $volume=$vol . $volume if (not $volume =~ m/^$vol/); #add /volumes/ if not there so "foo" becomes /volumes/foo
-    $volName=$1 if ($volume =~ m/^$vol(.*)\/$/); #harvest app name
+    my $vol="/Volumes/";
+     $volume=$vol . $volume if (not $volume =~ m/^$vol/); #add /volumes/ if not there so "foo" becomes /volumes/foo
+     $volName=$1 if ($volume =~ m/^$vol(.*)\/$/); #harvest app name
     print " Program Name: $volName\n" if ($verbose);
 
     
