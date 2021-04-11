@@ -2,7 +2,7 @@
 # Name: dmg2pkg.pl
 # Author: Jason Campisi
 # Date: 4/9/2021
-# Version: 1.1.2
+# Version: 1.1.3
 # Purpose: Convert mounted dmg file into a pkg installer
 # Repository: https://github.com/xeoron/Manage_Mosyle_MDM_MacOS
 # License: Released under GPL v3 or higher. Details here http://www.gnu.org/licenses/gpl.html
@@ -11,10 +11,9 @@ use strict;
 use Getopt::Long;
 use Scalar::Util qw(looks_like_number);
 
-my ($volume, $ver, $id, $create, $volName)=("","","","",""); 
+my ($volume, $ver, $id, $create, $volName, $appPick)=("","","","","", ""); 
 my ($verbose, $help, $harvest, $list, $sortAlpha, $dryrun, $only) = (0,0,0,0,0,0,0);
 my @applist; #sorted application list
-my $appPick="";
 
 GetOptions( "n=s" =>\$volume,  "v=s" =>\$ver,   "id=s" =>\$id,
             "c=s"  =>\$create, "help" =>\$help, "verbose" =>\$verbose,
@@ -84,7 +83,7 @@ if ($harvest){ #gather app bundle ID and appversion number
          print "    --> To gather the App Bundle ID and the App Version installed in /Applications/\n";
          print "        Choose the number of the program to harvest it from [0-$#applist]: ";
          my $appNumber = <STDIN>; chomp $appNumber;
-         until ( looks_like_number($appNumber) && $appNumber <= $#applist){ #isValid number within range?
+         until ( looks_like_number($appNumber) && $appNumber <= $#applist ){ #isValid number within range?
             print "     -> Choose a app number! [0-$#applist]: ";
             $appNumber = <STDIN>; chomp $appNumber;
          }
@@ -99,8 +98,8 @@ if ($harvest){ #gather app bundle ID and appversion number
          #harvest the app version number 
          $ver =~ s/^kMDItemVersion = \"(.*)\"$/$1/g;
          if ($create eq ""){
-            $create=$appPick;
-            $create=~s/\.app$//;
+            $create = $appPick;
+            $create =~s/\.app$//;
          }
          print"  ~ AppName $appNumber is $appPick\n  ~ ID is $id\n  ~ Version is $ver\n";
        } while (askTF("    Does this info look correct? [Yes/No]: ")); 
@@ -114,7 +113,7 @@ sub check(){ #varify data
    usage() if $help;
     if ($list or ($only and $volume eq "")){ getAppList(); exit 0; }   #display all /applications/
     
-    print "volume name: $volume\n";
+    print "volume name: $volume\n" if($verbose);
     if ($volume eq ""){##check if Volume exists and format info
         warn " Warning: DMG Volume location not provided!\n\n";
         exit 1;
@@ -124,13 +123,12 @@ sub check(){ #varify data
         exit 1;
     }
     print " DMG Mounted Volume found: $volume\n" if ($verbose);
-    $volume=~s/\\//g;  # remove forward slashs
-    my $vol="/Volumes/";
+    $volume =~s/\\//g;  # remove forward slashs
+    my $vol ="/Volumes/";
      $volume=$vol . $volume if (not $volume =~ m/^$vol/); #add /volumes/ if not there so "foo" becomes /volumes/foo
      $volName=$1 if ($volume =~ m/^$vol(.*)\/$/); #harvest app name
     print " Program Name: $volName\n" if ($verbose);
 
-    
     if (! harvestData() ){
         if ($ver eq ""){ warn "-v App Version not provided\n\n"; exit 1; }
         if ($id eq ""){ warn "-i App Bundle ID not provided\n\n"; exit 1; }
@@ -143,18 +141,18 @@ sub askTF($){                #ask user question returning True/False. Parameters
   
   my($msg) = @_; my $answer = "";
   print $msg;
-  until(($answer=<STDIN>)=~m/^(n|y|no|yes)/i){ print"$msg"; }
+  until( ($answer =<STDIN>)=~m/^(n|y|no|yes)/i ){ print"$msg"; }
 
- return $answer=~m/[n|no]/i;# ? 1 : 0 	 bool value of T/F
+ return $answer =~m/[n|no]/i;# ? 1 : 0 	 bool value of T/F
 }#end askTF($)
 
 sub getAppList(){ #grab App list, sort and print
 
-my @alist=sort(`ls /Applications/`); #grab list of files
+my @alist =sort(`ls /Applications/`); #grab list of files
 my ($leftCount, $rightCount, $pipe) =(0, 0, "|");
 my (@groupsOfTwo, @left, @right);
 
-  foreach ( @alist ) {  $_=~s/[\n|\r]?$//; } #strip out \n & \r chars
+  foreach ( @alist ) {  $_ =~s/[\n|\r]?$//; } #strip out \n & \r chars
   if (!$sortAlpha){ @applist = sort { length $a <=> length $b } @alist; } #sort by length
   else { @applist = @alist;}
  
@@ -162,7 +160,7 @@ my (@groupsOfTwo, @left, @right);
  
  #set mid count number
     if (0 == $#applist % 2) { $rightCount = $#applist/2; } #if even number
-    else{ $rightCount = ($#applist+1)/2; } #else off number
+    else{ $rightCount = ($#applist+1)/2; } #else odd number
  
  #build AoA with rows of 2 columns
  use List::MoreUtils 'natatime';
@@ -184,7 +182,7 @@ my (@groupsOfTwo, @left, @right);
     
     #re-order the @applist so number lists match index
     for my $value (@right) { $left[++$#left] = $value; } #bc push (@a1, @a2) is buggy on macOS11
-    @applist=@left;
+    @applist = @left;
 }#end getAppList()
 
 
