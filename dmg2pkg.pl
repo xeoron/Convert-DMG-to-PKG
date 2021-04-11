@@ -128,7 +128,7 @@ sub check(){ #varify data
     $volume=~s/\\//g;  # remove forward slashs
     $volume=$vol . $volume if (not $volume =~ m/^$vol/); #add /volumes/ if not there so "foo" becomes /volumes/foo
     $volName=$1 if ($volume =~ m/^$vol(.*)\/$/); #harvest app name
-    print " Program Name: $volName\n" if $*verbose);
+    print " Program Name: $volName\n" if ($verbose);
 
     
     if (! harvestData() ){
