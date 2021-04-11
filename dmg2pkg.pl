@@ -2,7 +2,7 @@
 # Name: dmg2pkg.pl
 # Author: Jason Campisi
 # Date: 4/9/2021
-# Version: 1.1.1
+# Version: 1.1.2
 # Purpose: Convert mounted dmg file into a pkg installer
 # Repository: https://github.com/xeoron/Manage_Mosyle_MDM_MacOS
 # License: Released under GPL v3 or higher. Details here http://www.gnu.org/licenses/gpl.html
@@ -75,46 +75,28 @@ EOD
     exit 0;    
 }#end usage
 
-sub check(){ #varify data
- 
-   usage() if $help;
-   if ($list or $only){getAppList(); exit 0; }   #display all /applications/
-   if ($volume eq ""){##check if Volume exists and format info
-        warn " Warning: DMG Volume location not provided!\n\n";
-        exit 1;
-   } 
-    $volume=~s/\\//g;  # remove forward slashs
-    $volume=$vol . $volume if (not $volume =~ m/^$vol/); #add /volumes/ if not there so "foo" becomes /volumes/foo
-    $volName=$1 if ($volume =~ m/^$vol(.*)\/$/); #harvest app name
-    print " Program Name: $volName\n" if $verbose;
-    if (not -d $volume){ #does volume exist?
-        warn " Warning: DMG Volume not detected. Please mount/click the DMG file to be findable!\n";
-        exit 1;
-    }
-    print " DMG Mounted Volume found: $volume\n" if $verbose;
-    
-    #check the rest of the data if it is present to work with
-    if ($harvest){ #gather app bundle ID and appversion number
-       print " Harvest appData\n" if $verbose;
-       getAppList();
+sub harvestData(){ #harvest appVersion, app bundle ID and app name
+
+if ($harvest){ #gather app bundle ID and appversion number
+       print " Harvest app data\n" if ($verbose);
+       getAppList(); #grab a list of files in /Applications/
        
        do {
          print "    --> To gather the App Bundle ID and the App Version installed in /Applications/\n";
          print "        Choose the number of the program to harvest it from [0-$#applist]: ";
-         my $appNumber = <STDIN>;
-         chomp $appNumber;
-         until ( looks_like_number($appNumber) && $appNumber<= $#applist){ #isValid number within range?
+         my $appNumber = <STDIN>; chomp $appNumber;
+         until ( looks_like_number($appNumber) && $appNumber <= $#applist){ #isValid number within range?
             print "     -> Choose a app number! [0-$#applist]: ";
-            $appNumber = <STDIN>;
-            chomp $appNumber;
+            $appNumber = <STDIN>; chomp $appNumber;
          }
-         $appPick=$applist[$appNumber];
+         $appPick = $applist[$appNumber];
+         
          #get app bundle id
-         $id=`osascript -e 'id of app "$appPick"'`;
-          chomp $id;
+         $id=`osascript -e 'id of app "$appPick"'`; chomp $id;
           
          #get app version number
          $ver=`mdls -name kMDItemVersion "/Applications/$appPick"`; chomp $ver;
+         
          #harvest the app version number 
          $ver =~ s/^kMDItemVersion = \"(.*)\"$/$1/g;
          if ($create eq ""){
@@ -123,8 +105,33 @@ sub check(){ #varify data
          }
          print"  ~ AppName $appNumber is $appPick\n  ~ ID is $id\n  ~ Version is $ver\n";
        } while (askTF("    Does this info look correct? [Yes/No]: ")); 
-       
-    }else{
+  return 1;   
+ }
+ return 0;
+}#end harvestData()
+
+sub check(){ #varify data
+ 
+   usage() if $help;
+    if ($list or ($only and $volume eq "")){ getAppList(); exit 0; }   #display all /applications/
+    
+    print "volume name: $volume\n";
+    if ($volume eq ""){##check if Volume exists and format info
+        warn " Warning: DMG Volume location not provided!\n\n";
+        exit 1;
+    }
+    if (not -d $volume){ #does volume exist?
+        warn " Warning: DMG Volume not detected. Please mount/click the DMG file to be findable!\n";
+        exit 1;
+    }
+    print " DMG Mounted Volume found: $volume\n" if ($verbose);
+    $volume=~s/\\//g;  # remove forward slashs
+    $volume=$vol . $volume if (not $volume =~ m/^$vol/); #add /volumes/ if not there so "foo" becomes /volumes/foo
+    $volName=$1 if ($volume =~ m/^$vol(.*)\/$/); #harvest app name
+    print " Program Name: $volName\n" if $*verbose);
+
+    
+    if (! harvestData() ){
         if ($ver eq ""){ warn "-v App Version not provided\n\n"; exit 1; }
         if ($id eq ""){ warn "-i App Bundle ID not provided\n\n"; exit 1; }
         if ($create eq ""){ warn "-c Name of package to create was not provided\n\n"; exit 1; }
@@ -133,8 +140,8 @@ sub check(){ #varify data
 }#end check()
 
 sub askTF($){                #ask user question returning True/False. Parameters = $message
-  my($msg) = @_; my $answer = "";
   
+  my($msg) = @_; my $answer = "";
   print $msg;
   until(($answer=<STDIN>)=~m/^(n|y|no|yes)/i){ print"$msg"; }
 
@@ -142,42 +149,51 @@ sub askTF($){                #ask user question returning True/False. Parameters
 }#end askTF($)
 
 sub getAppList(){ #grab App list, sort and print
-my @alist=sort(`ls /Applications/`); 
- foreach ( @alist ) {  $_=~s/[\n|\r]?$//; } #strip out \n & \r chars
- if (!$sortAlpha){ @applist = sort { length $a <=> length $b } @alist; } #sort by length
- else { @applist = @alist;}
+
+my @alist=sort(`ls /Applications/`); #grab list of files
+my ($leftCount, $rightCount, $pipe) =(0, 0, "|");
+my (@groupsOfTwo, @left, @right);
+
+  foreach ( @alist ) {  $_=~s/[\n|\r]?$//; } #strip out \n & \r chars
+  if (!$sortAlpha){ @applist = sort { length $a <=> length $b } @alist; } #sort by length
+  else { @applist = @alist;}
  
- @applist = grep {/.?\.app$/i} @applist if($only); #only display files ending in .app
+  @applist = grep {/.?\.app$/i} @applist if ($only); #only display files ending in .app
  
- my ($c, $mid, $numSub, $pipe) =(0, 0, 2, "|");
- my @groupsOfTwo;
  #set mid count number
-    if (0 == $#applist % 2) { $mid = $#applist/2; } #if even number
-    else{ $mid = ($#applist+1)/2; } #else off number
+    if (0 == $#applist % 2) { $rightCount = $#applist/2; } #if even number
+    else{ $rightCount = ($#applist+1)/2; } #else off number
  
  #build AoA with rows of 2 columns
  use List::MoreUtils 'natatime';
-    my $iter = natatime $numSub, @applist;
+    my $iter = natatime 2, @applist; 
     while (my @vals = $iter->()) { push @groupsOfTwo, \@vals; }
 
  #display results
     for my $row (@groupsOfTwo) {
         format STDOUT =
 @<< @< @<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< @<< @< @<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-        $c, $pipe, $row->[0], $mid, $pipe, $row->[1]
+        $leftCount, $pipe, $row->[0], $rightCount, $pipe, $row->[1]
 .
          write;
-         $c++; $mid++;
+         
+         push (@left, $row->[0]);
+         push (@right, $row->[1]);
+         $leftCount++; $rightCount++;
       }
-}#end getAppList
+    
+    #re-order the @applist so number lists match index
+    for my $value (@right) {$left[++$#left] = $value; } #bc push (@a1, @a2) is buggy on macOS11
+    @applist=@left;
+}#end getAppList()
 
 
 #### MAIN ####
 
-print " Welcome to dmg2pkg\n ...Checking all the data is in order...\n" if $verbose;
+print " Welcome to dmg2pkg\n ...Checking all the data is in order...\n" if ($verbose);
 check();
 
-print " Compile command:\n  pkgbuild --root \"$volume\" --version $ver --identifier $id --install-location \/Applications $create-$ver.pkg\n" if $verbose or $dryrun;
+print " Compile command:\n  pkgbuild --root \"$volume\" --version $ver --identifier $id --install-location \/Applications $create-$ver.pkg\n" if ($verbose or $dryrun);
 
 system("pkgbuild --root \"$volume\" --version $ver --identifier $id --install-location \/Applications $create-$ver.pkg") if (!$dryrun);
  
