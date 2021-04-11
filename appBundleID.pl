@@ -18,7 +18,7 @@ sub check(){ # check required data or if help was called
 appBundleID Tells you what a MacOS Application Bundle Identifier ID is.
 Knowing this is useful MDM's for when converting DMG -> PKG files
 
-    Ussage:        appBundleID.pl -a AppName
+    Usage:        appBundleID.pl -a AppName
                    -help
     Requirement:   install the app you want to harvest this data from
         

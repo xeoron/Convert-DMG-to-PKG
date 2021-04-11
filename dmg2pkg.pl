@@ -28,7 +28,7 @@ sub usage(){ # check required data or if help was called
 dmg2pkg.pl Converts mounted dmg install folders and convert them to a pkg installer 
     package for MDM deployment. 
 
-    Ussage:         dmg2pkg.pl -n VolumeNAME -v appVersion -s -i appBundleIdentifier path-to-save-MyMacApp
+    Usage:         dmg2pkg.pl -n VolumeNAME -v appVersion -s -i appBundleIdentifier path-to-save-MyMacApp
             
                     -n Name of mounted DMG Volume
                     -v Version The application encoded version number. Mke sure to sync this with the version you are 

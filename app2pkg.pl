@@ -24,7 +24,7 @@ sub usage(){ # check required data or if help was called
 app2pkg.pl Convert installed apps in the Applications folder to a pkg installer
     by asking you which program you can to harvest and convert into a deployment installer.
 
-    Ussage:         app2pkg.pl 
+    Usage:          app2pkg.pl 
     
     Optional        -help
                     -l list everything found in the folder /Applications/

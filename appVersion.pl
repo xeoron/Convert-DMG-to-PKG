@@ -18,7 +18,7 @@ sub usage(){ # check required data or if help was called
   print <<EOD;
 appVersion.pl Tells you the version of a MacOS app installed in Applications folder
 
-    Ussage:        appVersion.pl -a AppName
+    Usage:         appVersion.pl -a AppName
     Optional:      -p "/Application/Path/" 
                    Default is "/Applications/" or you can override it
                    -help
