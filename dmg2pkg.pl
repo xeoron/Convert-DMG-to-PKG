@@ -78,9 +78,9 @@ EOD
 sub check(){ #varify data
  
    usage() if $help;
-   if ($list){getAppList(); exit 1; }   #display all /applications/
+   if ($list){getAppList(); exit 0; }   #display all /applications/
    if ($volume eq ""){##check if Volume exists and format info
-        warn " Warning: DMG Volume location provided!\n\n";
+        warn " Warning: DMG Volume location not provided!\n\n";
         exit 1;
    } 
     $volume=~s/\\//g;  # remove forward slashs
