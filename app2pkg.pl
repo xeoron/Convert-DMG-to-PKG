@@ -2,7 +2,7 @@
 # Name: app2pkg.pl
 # Author: Jason Campisi
 # Date: 4/9/2021
-# Version 0.3.1 alpha
+# Version 0.3.2 alpha
 # Purpose: Convert installed apps in the Applications folder to a pkg installer
 # Repository: https://github.com/xeoron/Manage_Mosyle_MDM_MacOS
 # License: Released under GPL v3 or higher. Details here http://www.gnu.org/licenses/gpl.html
@@ -38,33 +38,43 @@ EOD
 }#end usage
 
 sub getAppList(){ #grab App list, sort and print
-my @alist=sort(`ls /Applications/`); 
- foreach ( @alist ) {  $_=~s/[\n|\r]?$//; } #strip out \n & \r chars
- if (!$sortAlpha){ @applist = sort { length $a <=> length $b } @alist; } #sort by length
- else { @applist = @alist;}
- @applist = grep {/.?\.app$/i} @applist if($only); #only display files ending in .app
+
+my @alist=sort(`ls /Applications/`); #grab list of files
+my ($leftCount, $rightCount, $pipe) =(0, 0, "|");
+my (@groupsOfTwo, @left, @right);
+
+  foreach ( @alist ) {  $_=~s/[\n|\r]?$//; } #strip out \n & \r chars
+  if (!$sortAlpha){ @applist = sort { length $a <=> length $b } @alist; } #sort by length
+  else { @applist = @alist;}
  
- my ($c, $mid, $numSub, $pipe) =(0, 0, 2, "|");
- my @groupsOfTwo; 
+  @applist = grep {/.?\.app$/i} @applist if ($only); #only display files ending in .app
+ 
  #set mid count number
-    if (0 == $#applist % 2) { $mid = $#applist/2; } #if even number
-    else{ $mid = ($#applist+1)/2; } #else off number
+    if (0 == $#applist % 2) { $rightCount = $#applist/2; } #if even number
+    else{ $rightCount = ($#applist+1)/2; } #else off number
  
  #build AoA with rows of 2 columns
  use List::MoreUtils 'natatime';
-    my $iter = natatime $numSub, @applist;
+    my $iter = natatime 2, @applist; 
     while (my @vals = $iter->()) { push @groupsOfTwo, \@vals; }
 
  #display results
     for my $row (@groupsOfTwo) {
         format STDOUT =
 @<< @< @<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< @<< @< @<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-        $c, $pipe, $row->[0], $mid, $pipe, $row->[1]
+        $leftCount, $pipe, $row->[0], $rightCount, $pipe, $row->[1]
 .
          write;
-         $c++; $mid++;
+         
+         push (@left, $row->[0]);
+         push (@right, $row->[1]);
+         $leftCount++; $rightCount++;
       }
-}#end getAppList
+    
+    #re-order the @applist so number lists match index
+    for my $value (@right) {$left[++$#left] = $value; } #bc push (@a1, @a2) is buggy on macOS11
+    @applist=@left;
+}#end getAppList()
 
 sub askTF($){                #ask user question returning True/False. Parameters = $message
   my($msg) = @_; my $answer = "";
