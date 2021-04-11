@@ -183,7 +183,7 @@ my (@groupsOfTwo, @left, @right);
       }
     
     #re-order the @applist so number lists match index
-    for my $value (@right) {$left[++$#left] = $value; } #bc push (@a1, @a2) is buggy on macOS11
+    for my $value (@right) { $left[++$#left] = $value; } #bc push (@a1, @a2) is buggy on macOS11
     @applist=@left;
 }#end getAppList()
 
