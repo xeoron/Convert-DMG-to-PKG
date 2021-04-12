@@ -23,7 +23,7 @@ GetOptions( "n=s" =>\$volume,  "v=s" =>\$ver,   "id=s" =>\$id,
 sub usage(){ # check required data or if help was called
 
   print <<EOD;
-dmg2pkg.pl Converts mounted dmg install folders and convert them to a pkg installer 
+dmg2pkg Converts mounted dmg install folders and convert them to a pkg installer 
     package for MDM deployment. 
 
     Usage:         dmg2pkg.pl -n VolumeNAME -v appVersion -s -i appBundleIdentifier path-to-save-MyMacApp

@@ -20,7 +20,7 @@ my @applist; #sorted application list
 
 sub usage(){ # check required data or if help was called
   print <<EOD;
-app2pkg.pl Convert installed apps in the Applications folder to a pkg installer
+app2pkg Convert installed apps in the Applications folder to a pkg installer
     by asking you which program you can to harvest and convert into a deployment installer.
 
     Usage:          app2pkg.pl 
