@@ -3,7 +3,7 @@
 #Filename: install_Manage_MDM_apps
 # Description: install the Manage Mosyle MDM MacOS apps
 #Date: 4/12/2021
-#version 1.1.0 For MacOS X or higher
+#version 1.1.1 For MacOS X or higher
 #Project: https://github.com/xeoron/Manage_Mosyle_MDM_MacOS
 #Released under the GPL v3 or higher
 
@@ -46,7 +46,7 @@ fi
 
 echo " Installing $NAME1, $NAME2, $NAME4 to $LOCATION ...\n";
 
-# Iterate the string variable using for loop
+#Iterate thru a list of filenames: Check if each file exists, make it runnable and install it
 for val in ${NameList[@]}; do
     echo " Checking if '$val' exists in the current folder..."
        if [ ! -n "$val.$EXT" ]; then
