@@ -101,8 +101,7 @@ sub findApp(){
          print"    ~ AppName $appNumber is $appPick\n";
     } while (askTF("      Does this info look correct? [Yes/No]: ")); 
        
-       $path ="/Applications/$appPick";
-       #Create package build name 
+       $path ="/Applications/$appPick"; #Create package build name 
          my $ver =`mdls -name kMDItemVersion "$path"`; chomp $ver; #get app version
          #harvest the app version number 
          $ver =~ s/^kMDItemVersion = \"(.*)\"$/$1/g;
