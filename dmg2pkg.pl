@@ -168,7 +168,7 @@ my (@groupsOfTwo, @left, @right);
 
  #display results
     for my $row (@groupsOfTwo) {   
-        $rightCount = "" if($row->[1] eq "" );
+        $rightCount = "" if($row->[1] eq "" ); #final case when an odd number only
         format STDOUT =
 @<< @< @<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< @<< @< @<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         $leftCount, $pipe, $row->[0], $rightCount, $pipe, $row->[1]
@@ -182,7 +182,7 @@ my (@groupsOfTwo, @left, @right);
 
     #re-order the @applist so number lists match index
     for my $value (@right) { $left[++$#left] = $value; } #bc push (@a1, @a2) is buggy on macOS11
-    pop @left if ($left[$#left] eq ""); #last one might be empty depending if even or odd... shed it
+    pop @left if ($left[$#left] eq ""); #last one is empty if odd number... shed it
     @applist = @left;
 }#end getAppList()
 
