@@ -2,7 +2,7 @@
 # Name: dmg2pkg.pl
 # Author: Jason Campisi
 # Date: 4/9/2021
-# Version: 1.1.3
+# Version: 1.1.4
 # Purpose: Convert mounted dmg file into a pkg installer
 # Repository: https://github.com/xeoron/Manage_Mosyle_MDM_MacOS
 # License: Released under GPL v3 or higher. Details here http://www.gnu.org/licenses/gpl.html
@@ -89,10 +89,10 @@ if ($harvest){ #gather app bundle ID and appversion number
          }
          $appPick = $applist[$appNumber];
          
-         #get app bundle id
-         $id=`osascript -e 'id of app "$appPick"'`; chomp $id;
+         #get app bundle id from mounted volume
+         $id=`osascript -e 'id of app "$volume/$appPick"'`; chomp $id;
           
-         #get app version number
+         #get app version number from installed copy
          $ver=`mdls -name kMDItemVersion "/Applications/$appPick"`; chomp $ver;
          
          #harvest the app version number 
