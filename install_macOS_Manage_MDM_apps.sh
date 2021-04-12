@@ -3,7 +3,7 @@
 #Filename: install_Manage_MDM_apps
 # Description: install the Manage Mosyle MDM MacOS apps
 #Date: 4/12/2021
-#version 1.0.0 For MacOS X or higher
+#version 1.1.0 For MacOS X or higher
 #Project: https://github.com/xeoron/Manage_Mosyle_MDM_MacOS
 #Released under the GPL v3 or higher
 
@@ -19,6 +19,8 @@ FILE3="$NAME3.$EXT"
 
 NAME4="app2pkg"
 FILE4="$NAME4.$EXT"
+
+declare -a NameList=("$NAME1" "$NAME2" "$NAME3" "$NAME4")
 
 LOCATION="/opt/local/bin/"
 echo "installer for: $NAME1, $NAME2, $NAME3, $NAME4\n";
@@ -44,64 +46,21 @@ fi
 
 echo " Installing $NAME1, $NAME2, $NAME4 to $LOCATION ...\n";
 
-#appBundleID
- echo " Checking if '$FILE1' exists in the current folder..."
-   if [ ! -n "$FILE1" ]; then
-      echo "   Error - Filename is not set!"
-      exit 1;
-   elif [ ! -e "$FILE1" ]; then
-      echo "   Error - The location of '$FILE1' does not exist!"
-      exit 1;
-   fi
- echo " ...found!\n";
- echo " Installing $NAME1...";
- cp ./$FILE1 $LOCATION$NAME1 
- echo "  Setting file to executable...\n";
- chmod +x ./$FILE1
-
-#appVersion
- echo " Checking if '$FILE2' exists in the current folder..."
-   if [ ! -n "$FILE2" ]; then
-      echo "   Error - Filename is not set!"
-      exit 1;
-   elif [ ! -e "$FILE2" ]; then
-      echo "   Error - The location of '$FILE2' does not exist!"
-      exit 1;
-   fi
- echo " ...found!\n";
- echo " Installing $NAME2...";
- cp ./$FILE2 $LOCATION$NAME2
- echo "  Setting file to executable...\n";
- chmod +x ./$FILE2
-
-#dmg2pkg
- echo " Checking if '$FILE3' exists in the current folder..."
-   if [ ! -n "$FILE3" ]; then
-      echo "   Error - Filename is not set!"
-      exit 1;
-   elif [ ! -e "$FILE3" ]; then
-      echo "   Error - The location of '$FILE3' does not exist!"
-      exit 1;
-   fi
- echo " ...found!\n";
- echo " Installing $NAME3...";
- cp ./$FILE3 $LOCATION$NAME3
- echo " Setting file to executable...";
- chmod +x ./$FILE3
-
-#app2pkg
- echo " Checking if '$FILE4' exists in the current folder..."
-   if [ ! -n "$FILE4" ]; then
-      echo "   Error - Filename is not set!"
-      exit 1;
-   elif [ ! -e "$FILE4" ]; then
-      echo "   Error - The location of '$FILE4' does not exist!"
-      exit 1;
-   fi
- echo " ...found!\n";
- echo " Installing $NAME4...";
- cp ./$FILE4 $LOCATION$NAME4
- echo " Setting file to executable...";
- chmod +x ./$FILE4
+# Iterate the string variable using for loop
+for val in ${NameList[@]}; do
+    echo " Checking if '$val' exists in the current folder..."
+       if [ ! -n "$val.$EXT" ]; then
+            echo "   Error - Filename is not set!"
+            exit 1;
+        elif [ ! -e "$val.$EXT" ]; then
+            echo "   Error - The location of '$val.$EXT' does not exist!"
+            exit 1;
+        fi
+    echo " ...found!\n";
+    echo "  Setting file to executable...\n";
+    chmod +x ./$val.$EXT
+    echo " Installing $val...";
+    cp ./$val.$EXT $LOCATION$val
+done
 
 echo "...Setup complete."
