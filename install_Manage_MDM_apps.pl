@@ -2,8 +2,8 @@
 #Author: Jason Campisi
 #Filename: install_Manage_MDM_apps
 # Description: install the Manage Mosyle MDM MacOS apps
-#Date: 4/11/2021
-#version 0.3.0 For MacOS X or higher
+#Date: 4/12/2021
+#version 1.0.0 For MacOS X or higher
 #Project: https://github.com/xeoron/Manage_Mosyle_MDM_MacOS
 #Released under the GPL v3 or higher
 
@@ -44,6 +44,7 @@ fi
 
 echo " Installing $NAME1, $NAME2, $NAME4 to $LOCATION ...\n";
 
+#appBundleID
  echo " Checking if '$FILE1' exists in the current folder..."
    if [ ! -n "$FILE1" ]; then
       echo "   Error - Filename is not set!"
@@ -58,6 +59,7 @@ echo " Installing $NAME1, $NAME2, $NAME4 to $LOCATION ...\n";
  echo "  Setting file to executable...\n";
  chmod +x ./$FILE1
 
+#appVersion
  echo " Checking if '$FILE2' exists in the current folder..."
    if [ ! -n "$FILE2" ]; then
       echo "   Error - Filename is not set!"
@@ -72,6 +74,7 @@ echo " Installing $NAME1, $NAME2, $NAME4 to $LOCATION ...\n";
  echo "  Setting file to executable...\n";
  chmod +x ./$FILE2
 
+#dmg2pkg
  echo " Checking if '$FILE3' exists in the current folder..."
    if [ ! -n "$FILE3" ]; then
       echo "   Error - Filename is not set!"
@@ -86,19 +89,19 @@ echo " Installing $NAME1, $NAME2, $NAME4 to $LOCATION ...\n";
  echo " Setting file to executable...";
  chmod +x ./$FILE3
 
-echo "\n ###Skipping alpha program $NAME4.$EXT <-- it is not ready for use.###\n";
-# echo " Checking if '$FILE4' exists in the current folder..."
-#   if [ ! -n "$FILE4" ]; then
-#      echo "   Error - Filename is not set!"
-#      exit 1;
-#   elif [ ! -e "$FILE4" ]; then
-#      echo "   Error - The location of '$FILE4' does not exist!"
-#      exit 1;
-#   fi
-# echo " ...found!\n";
-# echo " Installing $NAME4...";
-# cp ./$FILE3 $LOCATION$NAME3
-# echo " Setting file to executable...";
-# chmod +x ./$FILE4
+#app2pkg
+ echo " Checking if '$FILE4' exists in the current folder..."
+   if [ ! -n "$FILE4" ]; then
+      echo "   Error - Filename is not set!"
+      exit 1;
+   elif [ ! -e "$FILE4" ]; then
+      echo "   Error - The location of '$FILE4' does not exist!"
+      exit 1;
+   fi
+ echo " ...found!\n";
+ echo " Installing $NAME4...";
+ cp ./$FILE4 $LOCATION$NAME4
+ echo " Setting file to executable...";
+ chmod +x ./$FILE4
 
 echo "...Setup complete."

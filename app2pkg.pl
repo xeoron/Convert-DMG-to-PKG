@@ -1,8 +1,8 @@
 #!/usr/bin/perl
 # Name: app2pkg.pl
 # Author: Jason Campisi
-# Date: 4/9/2021
-# Version 0.3.3 alpha
+# Date: 4/12/2021
+# Version 1.0.0 
 # Purpose: Convert installed apps in the Applications folder to a pkg installer
 # Repository: https://github.com/xeoron/Manage_Mosyle_MDM_MacOS
 # License: Released under GPL v3 or higher. Details here http://www.gnu.org/licenses/gpl.html
@@ -11,6 +11,7 @@
 use strict;
 use Getopt::Long;
 use Scalar::Util qw(looks_like_number);
+use Data::Dumper;
 my ($path, $create, $appPick) = ("","", "");
 my ($list, $sortAlpha, $dryrun, $only, $help)=(0, 0, 0, 0, 0);
 GetOptions( "l" =>\$list, "sort" =>\$sortAlpha, "dr" =>\$dryrun, 
@@ -48,8 +49,7 @@ my (@groupsOfTwo, @left, @right);
  
   @applist = grep {/.?\.app$/i} @applist if ($only); #only display files ending in .app
  
- #set mid count number
-    if (0 == $#applist % 2) { $rightCount = $#applist/2; } #if even number
+    if (0 == $#applist % 2) { $rightCount = ($#applist/2)+1; } #if even number
     else{ $rightCount = ($#applist+1)/2; } #else odd number
  
  #build AoA with rows of 2 columns
@@ -58,20 +58,22 @@ my (@groupsOfTwo, @left, @right);
     while (my @vals = $iter->()) { push @groupsOfTwo, \@vals; }
 
  #display results
-    for my $row (@groupsOfTwo) {
+    for my $row (@groupsOfTwo) {   
+        $rightCount = "" if($row->[1] eq "" );
         format STDOUT =
 @<< @< @<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< @<< @< @<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         $leftCount, $pipe, $row->[0], $rightCount, $pipe, $row->[1]
 .
-         write;
+        write;
          
-         push (@left, $row->[0]);
-         push (@right, $row->[1]);
-         $leftCount++; $rightCount++;
-      }
-    
+        push (@left, $row->[0]);
+        push (@right, $row->[1]);
+        $leftCount++; $rightCount++;
+    }     
+
     #re-order the @applist so number lists match index
-    for my $value (@right) {$left[++$#left] = $value; } #bc push (@a1, @a2) is buggy on macOS11
+    for my $value (@right) { $left[++$#left] = $value; } #bc push (@a1, @a2) is buggy on macOS11
+    pop @left if ($left[$#left] eq ""); #last one might be empty depending if even or odd... shed it
     @applist = @left;
 }#end getAppList()
 
@@ -79,7 +81,7 @@ sub askTF($){                #ask user question returning True/False. Parameters
   my($msg) = @_; my $answer = "";
   
   print $msg;
-  until( ($answer=<STDIN>) =~m/^(n|y|no|yes)/ i){ print"$msg"; }
+  until( ($answer=<STDIN>) =~m/^(n|y|no|yes)/i ){ print"$msg"; }
 
  return $answer =~m/[n|no]/i;# ? 1 : 0 	 bool value of T/F
 }#end askTF($)
@@ -101,7 +103,7 @@ sub findApp(){
        
        $path ="/Applications/$appPick";
        #Create package build name 
-         my $ver =`mdls -name kMDItemVersion "/Applications/$appPick"`; chomp $ver; #get app version
+         my $ver =`mdls -name kMDItemVersion "$path"`; chomp $ver; #get app version
          #harvest the app version number 
          $ver =~ s/^kMDItemVersion = \"(.*)\"$/$1/g;
          $appPick =~s/\.app$//i;
@@ -110,12 +112,13 @@ sub findApp(){
 
 
 usage() if $help;
- if ($list or $only){ getAppList(); exit 0;}
+ print "Welcome to app2pkg\n";
+ 
+ if ($list or ($only and $list)){ getAppList(); exit 0;}
  findApp();
 
  if ($dryrun){
-    print " Compile command:\n  sudo productbuild --component$path $create\n";
+    print " Compile command:\n  sudo productbuild --component '$path' $create\n";
  }else{
-    print "~~~~############ Alpha Code.... build will fail! ############~~~~\n";
-    system ("sudo productbuild --component$path $create");
+    system ("sudo productbuild --component '$path' $create");
  }

@@ -11,7 +11,7 @@ appVersion
 ===============
 	Tells you the version of a Application stored in the Applications folder.
 
-app2pkg: not usable yet
+app2pkg: 
 ===============
 	Converts an app program installed in /Applications/ to the pkg installer format
     making it a MDM deplpoyment installer that will work with Mosyle.

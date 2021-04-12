@@ -2,7 +2,7 @@
 # Name: dmg2pkg.pl
 # Author: Jason Campisi
 # Date: 4/9/2021
-# Version: 1.1.4
+# Version: 1.1.5
 # Purpose: Convert mounted dmg file into a pkg installer
 # Repository: https://github.com/xeoron/Manage_Mosyle_MDM_MacOS
 # License: Released under GPL v3 or higher. Details here http://www.gnu.org/licenses/gpl.html
@@ -90,7 +90,7 @@ if ($harvest){ #gather app bundle ID and appversion number
          $appPick = $applist[$appNumber];
          
          #get app bundle id from mounted volume
-         $id=`osascript -e 'id of app "$volume/$appPick"'`; chomp $id;
+         $id=`osascript -e 'id of app "/Applications/$appPick"'`; chomp $id;
           
          #get app version number from installed copy
          $ver=`mdls -name kMDItemVersion "/Applications/$appPick"`; chomp $ver;
@@ -158,8 +158,7 @@ my (@groupsOfTwo, @left, @right);
  
   @applist = grep {/.?\.app$/i} @applist if ($only); #only display files ending in .app
  
- #set mid count number
-    if (0 == $#applist % 2) { $rightCount = $#applist/2; } #if even number
+    if (0 == $#applist % 2) { $rightCount = ($#applist/2)+1; } #if even number
     else{ $rightCount = ($#applist+1)/2; } #else odd number
  
  #build AoA with rows of 2 columns
@@ -168,27 +167,29 @@ my (@groupsOfTwo, @left, @right);
     while (my @vals = $iter->()) { push @groupsOfTwo, \@vals; }
 
  #display results
-    for my $row (@groupsOfTwo) {
+    for my $row (@groupsOfTwo) {   
+        $rightCount = "" if($row->[1] eq "" );
         format STDOUT =
 @<< @< @<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< @<< @< @<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         $leftCount, $pipe, $row->[0], $rightCount, $pipe, $row->[1]
 .
-         write;
+        write;
          
-         push (@left, $row->[0]);
-         push (@right, $row->[1]);
-         $leftCount++; $rightCount++;
-      }
-    
+        push (@left, $row->[0]);
+        push (@right, $row->[1]);
+        $leftCount++; $rightCount++;
+    }     
+
     #re-order the @applist so number lists match index
     for my $value (@right) { $left[++$#left] = $value; } #bc push (@a1, @a2) is buggy on macOS11
+    pop @left if ($left[$#left] eq ""); #last one might be empty depending if even or odd... shed it
     @applist = @left;
 }#end getAppList()
 
 
 #### MAIN ####
 
-print " Welcome to dmg2pkg\n ...Checking all the data is in order...\n" if ($verbose);
+print "Welcome to dmg2pkg ...Checking all the data is in order...\n" if ($verbose);
 check();
 
 print " Compile command:\n  pkgbuild --root \"$volume\" --version $ver --identifier $id --install-location \/Applications $create-$ver.pkg\n" if ($verbose or $dryrun);
