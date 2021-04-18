@@ -47,6 +47,7 @@ dmg2pkg Converts mounted dmg install folders and convert them to a pkg installer
                         Requires the app to be installed in /Applications/ folder.
 
     Requirement:    Must have a dmg file you have opened/mounted for this program to work
+                    -a requires the app to be installed in /Applications
     
     Extra Detail:   Please use the following apps to gather the required version and id informaiton:
                     The application you want to conver to a pkg must be installed for this to work.
