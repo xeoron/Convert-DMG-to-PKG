@@ -2,7 +2,7 @@
 # Name: dmg2pkg.pl
 # Author: Jason Campisi
 # Date: 4/9/2021
-# Version: 1.1.5
+# Version: 1.1.6
 # Purpose: Convert mounted dmg file into a pkg installer
 # Repository: https://github.com/xeoron/Manage_Mosyle_MDM_MacOS
 # License: Released under GPL v3 or higher. Details here http://www.gnu.org/licenses/gpl.html
@@ -26,7 +26,7 @@ sub usage(){ # check required data or if help was called
 dmg2pkg Converts mounted dmg install folders and convert them to a pkg installer 
     package for MDM deployment. 
 
-    Usage:         dmg2pkg.pl -n VolumeNAME -v appVersion -s -i appBundleIdentifier path-to-save-MyMacApp
+    Usage:         dmg2pkg.pl -n VolumeNAME -v appVersion -s -i appBundleIdentifier appPackageName
             
                     -n Name of mounted DMG Volume
                     -v Version The application encoded version number. Mke sure to sync this with the version you are 
@@ -116,11 +116,11 @@ sub check(){ #varify data
     print "volume name: $volume\n" if($verbose);
     if ($volume eq ""){##check if Volume exists and format info
         warn " Warning: DMG Volume location not provided!\n\n";
-        exit 1;
+        usage();
     }
     if (not -d $volume){ #does volume exist?
-        warn " Warning: DMG Volume not detected. Please mount/click the DMG file to be findable!\n";
-        exit 1;
+        warn " Warning: DMG Volume not detected. Please mount/click the DMG file to be findable!\n\n";
+        usage();
     }
     print " DMG Mounted Volume found: $volume\n" if ($verbose);
     $volume =~s/\\//g;  # remove forward slashs
