@@ -18,13 +18,20 @@ sub check(){ # check required data or if help was called
 appBundleID Tells you what a MacOS Application Bundle Identifier ID is.
 Knowing this is useful MDM's for when converting DMG -> PKG files
 
-    Usage:        appBundleID.pl -a AppName
+    Usage:         appBundleID -a AppName
                    -help
     Requirement:   install the app you want to harvest this data from
         
         
-Example: appBundleID.pl -a VLC
+Example 1: appBundleID -a VLC
 org.videolan.vlc
+
+Example 2: appBundleID -a "davinci resolve"
+com.blackmagic-design.DaVinciResolveLite
+
+Example 3: appBundleID -a /Applications/darktable.app
+org.darktable
+
 
 EOD
     exit 0;    
