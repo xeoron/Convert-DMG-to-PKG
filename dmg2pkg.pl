@@ -1,8 +1,8 @@
 #!/usr/bin/perl
 # Name: dmg2pkg.pl
 # Author: Jason Campisi
-# Date: 4/9/2021
-# Version: 1.1.6
+# Date: 4/25/2021
+# Version: 1.1.7
 # Purpose: Convert mounted dmg file into a pkg installer
 # Repository: https://github.com/xeoron/Manage_Mosyle_MDM_MacOS
 # License: Released under GPL v3 or higher. Details here http://www.gnu.org/licenses/gpl.html
@@ -26,7 +26,7 @@ sub usage(){ # check required data or if help was called
 dmg2pkg Converts mounted dmg install folders and convert them to a pkg installer 
     package for MDM deployment. 
 
-    Usage:         dmg2pkg.pl -n VolumeNAME -v appVersion -s -i appBundleIdentifier appPackageName
+    Usage:         dmg2pkg -n VolumeNAME -v appVersion -s -i appBundleIdentifier appPackageName
             
                     -n Name of mounted DMG Volume
                     -v Version The application encoded version number. Mke sure to sync this with the version you are 
@@ -60,14 +60,14 @@ dmg2pkg Converts mounted dmg install folders and convert them to a pkg installer
 
 Examples:
   List the Apps in /Applications/
-    dmg2pkg.pl -o
+    dmg2pkg -o
   
   For best results, provide all the informaiton requred with vlc-3.0.12-intel64.dmg mounted file.
-    dmg2pkg.pl -n "/Volumes/VLC media player" -v 3.0.12 -id org.videolan.vlc -s -c VLC
+    dmg2pkg -n "/Volumes/VLC media player" -v 3.0.12 -id org.videolan.vlc -s -c VLC
         --> Creates VLC-3.0.12.pkg
 
   Have it grather most of the information for you with a vlc-3.0.12-intel64.dmg mounted file
-    dmg2pkg.pl -a -n /Volumes/VLC\ media\ player/
+    dmg2pkg -a -n /Volumes/VLC\ media\ player/
         --> Creates VLC-3.0.12.pkg
 
 EOD

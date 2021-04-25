@@ -25,8 +25,11 @@ appVersion.pl Tells you the version of a MacOS app installed in Applications fol
     Requirement:   install the app you want to harvest this data from
         
         
-Example: appVersion.pl -a VLC
+Example 1 : appVersion.pl -a VLC
 3.0.12
+
+Example 2: appBundleID -a /Applications/darktable.app
+3.4.1
 
 EOD
     exit 0;    

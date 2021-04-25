@@ -1,8 +1,8 @@
 #!/usr/bin/perl
 # Name: app2pkg.pl
 # Author: Jason Campisi
-# Date: 4/12/2021
-# Version 1.0.0 
+# Date: 4/25/2021
+# Version 1.0.1 
 # Purpose: Convert installed apps in the Applications folder to a pkg installer
 # Repository: https://github.com/xeoron/Manage_Mosyle_MDM_MacOS
 # License: Released under GPL v3 or higher. Details here http://www.gnu.org/licenses/gpl.html
@@ -24,7 +24,7 @@ sub usage(){ # check required data or if help was called
 app2pkg Convert installed apps in the Applications folder to a pkg installer
     by asking you which program you can to harvest and convert into a deployment installer.
 
-    Usage:          app2pkg.pl 
+    Usage:          app2pkg
     
     Optional        -help
                     -l list everything found in the folder /Applications/
