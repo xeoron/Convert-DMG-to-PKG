@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 # Name: appVersion.pl
 # Author: Jason Campisi
-# Date: 4/6/2021
+# Date: 4/24/2021
 # Purpose: Tells you the version of a MacOS app installed in Applications folder
 # Repository: https://github.com/xeoron/Manage_Mosyle_MDM_MacOS
 # License: Released under GPL v3 or higher. Details here http://www.gnu.org/licenses/gpl.html
@@ -33,6 +33,8 @@ EOD
 }#end Usage
 
 usage();
+$path = "" if $app =~m/^\/Applications\//;
+$app =~s/\.app$//i;
 
  my $r=`mdls -name kMDItemVersion "$path$app.app"`;
   $r =~ s/^kMDItemVersion = \"(.*)\"$/$1/g;  #harvest the app version number

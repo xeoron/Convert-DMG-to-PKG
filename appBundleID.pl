@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 # Name: appBundleID.pl
 # Author: Jason Campisi
-# Date: 4/6/2021
+# Date: 4/24/2021
 # Purpose: Tells you what a MacOS Application Bundle Identifier ID is
 # Repository: https://github.com/xeoron/Manage_Mosyle_MDM_MacOS
 # License: Released under GPL v3 or higher. Details here http://www.gnu.org/licenses/gpl.html
@@ -33,7 +33,8 @@ EOD
 
 check(); 
 
- my $r=`osascript -e 'id of app "$app"'`;
-  print "$r";
+$app="/Applications/" . $app . ".app" if ($app !~m /^\/Applications\//);
+
+print `osascript -e 'id of app "$app"'`;
 
 exit 0;
