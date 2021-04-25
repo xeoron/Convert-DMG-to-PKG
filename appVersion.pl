@@ -34,7 +34,7 @@ EOD
 
 usage();
 $path = "" if $app =~m/^\/Applications\//;
-$app =~s/\.app$//i;
+$app =~s/\.app[\/]?$//i;
 
  my $r=`mdls -name kMDItemVersion "$path$app.app"`;
   $r =~ s/^kMDItemVersion = \"(.*)\"$/$1/g;  #harvest the app version number
