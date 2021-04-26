@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 # Name: appBundleID.pl
 # Author: Jason Campisi
-# Date: 4/24/2021
+# Date: 4/26/2021
 # Purpose: Tells you what a MacOS Application Bundle Identifier ID is
 # Repository: https://github.com/xeoron/Manage_Mosyle_MDM_MacOS
 # License: Released under GPL v3 or higher. Details here http://www.gnu.org/licenses/gpl.html
@@ -13,7 +13,7 @@ my ($app, $help) = ("",0);
 GetOptions("a:s"  =>\$app, "help" =>\$help) or usage();
 
 sub check(){ # check required data or if help was called
-  return if ($help || $app ne "");
+  if ($help or $app eq ""){
   print <<EOD;
 appBundleID Tells you what a MacOS Application Bundle Identifier ID is.
 Knowing this is useful MDM's for when converting DMG -> PKG files
@@ -31,10 +31,10 @@ com.blackmagic-design.DaVinciResolveLite
 
 Example 3: appBundleID -a /Applications/darktable.app
 org.darktable
-
-
 EOD
-    exit 0;    
+    exit 0;
+  } #end if
+
 }#end usage
 
 
