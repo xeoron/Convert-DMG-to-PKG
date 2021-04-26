@@ -14,8 +14,8 @@ my ($app, $path, $help) = ("","/Applications/",0);
 GetOptions("a:s"  =>\$app, "p:s" =>\$path, "help" =>\$help) or usage();
 
 sub usage(){ # check required data or if help was called
-  return if ($help || $app ne "");
-  print <<EOD;
+  if ($help or $app eq ""){
+    print <<EOD;
 appVersion.pl Tells you the version of a MacOS app installed in Applications folder
 
     Usage:         appVersion.pl -a AppName
@@ -32,7 +32,8 @@ Example 2: appBundleID -a /Applications/darktable.app
 3.4.1
 
 EOD
-    exit 0;    
+      exit 0;
+    }#end if
 }#end Usage
 
 usage();
