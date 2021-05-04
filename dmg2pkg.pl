@@ -1,8 +1,8 @@
 #!/usr/bin/perl
 # Name: dmg2pkg.pl
 # Author: Jason Campisi
-# Date: 4/25/2021
-# Version: 1.1.7
+# Date: 5/4/2021
+# Version: 1.2.0
 # Purpose: Convert mounted dmg file into a pkg installer
 # Repository: https://github.com/xeoron/Manage_Mosyle_MDM_MacOS
 # License: Released under GPL v3 or higher. Details here http://www.gnu.org/licenses/gpl.html
@@ -166,6 +166,9 @@ my (@groupsOfTwo, @left, @right);
  use List::MoreUtils 'natatime';
     my $iter = natatime 2, @applist; 
     while (my @vals = $iter->()) { push @groupsOfTwo, \@vals; }
+
+if ($list){ print "Installed apps to harvest the Version Number and App BundleID from\n"; }
+else{ print "Match the dmg app: Choose the installed app to harvest the Version Number and App BundleID from\n" }
 
  #display results
     for my $row (@groupsOfTwo) {   
