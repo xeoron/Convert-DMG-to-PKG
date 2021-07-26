@@ -2,8 +2,8 @@
 #Author: Jason Campisi
 #Filename: install_Manage_MDM_apps
 # Description: install the Manage Mosyle MDM MacOS apps
-#Date: 4/12/2021
-#version 1.1.1 For MacOS X or higher
+#Date: 8/26/2021
+#version 1.1.2 For MacOS X or higher
 #Project: https://github.com/xeoron/Manage_Mosyle_MDM_MacOS
 #Released under the GPL v3 or higher
 
@@ -44,7 +44,7 @@ else
 	echo " Root access granted for $0\n";	
 fi
 
-echo " Installing $NAME1, $NAME2, $NAME4 to $LOCATION ...\n";
+echo " Installing $NAME1, $NAME2, $NAME3, $NAME4 to $LOCATION ...\n";
 
 #Iterate thru a list of filenames: Check if each file exists, make it runnable and install it
 for val in ${NameList[@]}; do
