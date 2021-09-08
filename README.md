@@ -32,7 +32,9 @@ app2pkg
     Choose which app from a list and then making MDM deplpoyment installer that will work with Mosyle.
     This is a front end to productbuild to make the process less painful.
 
-    See help for more more options
+    Usage: app2pkg
+
+    See help for more options
       app2pkg -help   
 
 dmg2pkg
