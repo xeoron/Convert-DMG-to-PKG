@@ -1,9 +1,9 @@
 #!/bin/sh -e
 #Author: Jason Campisi
-#Filename: install_Manage_MDM_apps
-# Description: install the Manage Mosyle MDM MacOS apps
-#Date: 8/26/2021
-#version 1.1.2 For MacOS X or higher
+#Filename: install_convert_DMG-to-PKG_apps
+# Description: install apps bundle that make it easy to convert apps to DMG files.
+#Date: 11/23/2021
+#version 1.2.0 For MacOS X or higher
 #Project: https://github.com/xeoron/Manage_Mosyle_MDM_MacOS
 #Released under the GPL v3 or higher
 
