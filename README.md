@@ -23,7 +23,7 @@ appVersion
     Example 1 : appVersion.pl -a VLC
         3.0.12
 
-    Example 2: appBundleID -a /Applications/darktable.app
+    Example 2: appVersion.pl -a /Applications/darktable.app
         3.4.1
 
 app2pkg 
