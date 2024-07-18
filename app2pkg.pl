@@ -1,8 +1,8 @@
 #!/usr/bin/perl
 # Name: app2pkg.pl
 # Author: Jason Campisi
-# Date: 5/4/2021
-# Version 1.1.0 
+# Date: 7/18/2024
+# Version 1.1.1 
 # Purpose: Convert installed apps in the Applications folder to a pkg installer
 # Repository: https://github.com/xeoron/Manage_Mosyle_MDM_MacOS
 # License: Released under GPL v3 or higher. Details here http://www.gnu.org/licenses/gpl.html
@@ -14,8 +14,8 @@ use Scalar::Util qw(looks_like_number);
 use Data::Dumper;
 my ($path, $create, $appPick) = ("","", "");
 my ($list, $sortAlpha, $dryrun, $only, $help)=(0, 0, 0, 0, 0);
-GetOptions( "l" =>\$list, "sort" =>\$sortAlpha, "dr" =>\$dryrun, 
-            "o" =>\$only, "help" =>\$help) or usage();
+GetOptions( "l" =>\$list, "s|sort" =>\$sortAlpha, "dr" =>\$dryrun, 
+            "o" =>\$only, "h|help" =>\$help) or usage();
 
 my @applist; #sorted application list
 
@@ -26,10 +26,13 @@ app2pkg Convert installed apps in the Applications folder to a pkg installer
 
     Usage:          app2pkg
     
-    Optional        -help
-                    -l list everything found in the folder /Applications/
-                    -o Only list programs found in the /Applications/ Applications folder.
-                    -sort Sort the applications list alphanumerically.
+    Optional        
+                    -l      List everything found in the folder /Applications/
+                    -dr     Dry run mode
+                    -o      Only list programs found in the /Applications/ Applications folder.
+                    -s|sort Sort the applications list alphanumerically.
+                    -h|help 
+
     Requirement:    install the app you want to harvest this data from
 
 
