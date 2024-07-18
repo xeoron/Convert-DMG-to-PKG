@@ -29,13 +29,23 @@ appVersion
 app2pkg 
 ===============
 	Converts an app program installed in /Applications/ to the pkg installer format.
-    Choose which app from a list and then making MDM deplpoyment installer that will work with Mosyle.
+    It will ask to choose which app from a list and then making a pkg installer version.
     This is a front end to productbuild to make the process less painful.
 
-    Usage: app2pkg
+    Convert installed apps in the Applications folder to a pkg installer
+    by asking you which program you can to harvest and convert into a deployment installer.
 
-    See help for more options
-      app2pkg -help   
+    Usage:          app2pkg
+    
+    Optional        
+                    -dr     Dry run mode
+                    -l      list everything found in the folder /Applications/
+                    -o      Only list programs found in the /Applications/ Applications folder.
+                    -s|sort Sort the applications list alphanumerically.
+                    -h|help
+
+    Requirement:    install the app you want to harvest this data from
+  
 
 dmg2pkg
 ===============
