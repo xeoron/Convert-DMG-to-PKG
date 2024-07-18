@@ -63,7 +63,7 @@ dmg2pkg
        dmg2pkg -a -n /Volumes/VLC\ media\ player/
             --> Creates VLC-3.0.12.pkg
 
-     dmg2pkg -help
+    dmg2pkg -help
            Usage:   dmg2pkg -n VolumeNAME -v appVersion -s -i appBundleIdentifier appPackageName
             
                     -n Name of mounted DMG Volume
