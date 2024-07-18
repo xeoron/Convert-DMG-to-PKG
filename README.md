@@ -63,5 +63,35 @@ dmg2pkg
        dmg2pkg -a -n /Volumes/VLC\ media\ player/
             --> Creates VLC-3.0.12.pkg
 
-     See help for more options
-       dmg2pkg -help
+     dmg2pkg -help
+           Usage:         dmg2pkg -n VolumeNAME -v appVersion -s -i appBundleIdentifier appPackageName
+            
+                    -n Name of mounted DMG Volume
+                    -v Version The application encoded version number. Mke sure to sync this with the version you are 
+                        trying to deploy (if it’s VLClan v3.1.12, then this parameter is 3.1.12). How to find 
+                        the encoded version number go to the section Extra Detail for more information
+                    -id Application bundle identifier. Go to the secion Extra Detail for more information
+                    -c Name of the PKG file you will create in the current folder. Optional, iff -a is used.
+                    
+    Optional        -help
+                    -verbose
+                    -dr   Dry run mode. It will confirm everything and not try to build anything.
+                    -l    list everything found in the folder /Applications/
+                    -o    Only list programs found in the /Applications/ Applications folder.
+                    -sort List of Applications sorted alphanumerically.
+                    -a    AppData...gather the required app version number and bundle id info automaticly.
+                        This displays a list of installed apps and asks you which one is the target.
+                        Note: -c is optional, because it will harvest that information out of /Applications/
+                        Requires the app to be installed in /Applications/ folder.
+
+    Requirement:    Must have a dmg file you have opened/mounted for this program to work
+                    -a requires the app to be installed in /Applications
+    
+    Extra Detail:   Please use the following apps to gather the required version and id informaiton:
+                    The application you want to conver to a pkg must be installed for this to work.
+                        
+                        appBundleID.pl to discover/harvest the identifier code of a program.
+                        
+                        appVersion.pl to discoer/harvest the application version number that you 
+                            want to convert to a pkg installer file. It is very important you use
+                            the version it is signed with.
