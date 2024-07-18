@@ -38,10 +38,10 @@ app2pkg
     Usage:          app2pkg
     
     Optional        
-                    -dr     Dry run mode
-                    -l      list everything found in the folder /Applications/
-                    -o      Only list programs found in the /Applications/ Applications folder.
-                    -s|sort Sort the applications list alphanumerically.
+                    -dr      Dry run mode
+                    -l|list  List everything found in the folder /Applications/
+                    -o|only  Only list programs found in the /Applications/ Applications folder.
+                    -s|sort  Sort the applications list alphanumerically.
                     -h|help
 
     Requirement:    install the app you want to harvest this data from
