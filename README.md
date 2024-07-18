@@ -64,7 +64,7 @@ dmg2pkg
             --> Creates VLC-3.0.12.pkg
 
      dmg2pkg -help
-           Usage:         dmg2pkg -n VolumeNAME -v appVersion -s -i appBundleIdentifier appPackageName
+           Usage:   dmg2pkg -n VolumeNAME -v appVersion -s -i appBundleIdentifier appPackageName
             
                     -n Name of mounted DMG Volume
                     -v Version The application encoded version number. Mke sure to sync this with the version you are 
