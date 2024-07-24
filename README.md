@@ -1,6 +1,7 @@
 Convert macOS apps or DMG installer files to the PGK format
 ===============
- This is a colleciton of Perl scripts for converting MacOS Apps to PKG deployment installer files to use with Mosyle or any other MDM
+ This is a colleciton of Perl scripts for converting MacOS Apps to PKG deployment installer files to use with other systems
+ or to deploy via MDM's such as Mosyle. Target installed apps or DMG files.
 
 appBundleID
 ===============
