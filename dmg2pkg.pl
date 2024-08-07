@@ -2,9 +2,9 @@
 # Name: dmg2pkg.pl
 # Author: Jason Campisi
 # Date: 5/4/2021
-# Version: 1.2.1 
+# Version: 1.2.2 
 # Purpose: Convert mounted dmg file into a pkg installer
-# Repository: https://github.com/xeoron/Manage_Mosyle_MDM_MacOS
+# Repository: https://github.com/xeoron/Convert-DMG-to-PKG
 # License: Released under GPL v3 or higher. Details here http://www.gnu.org/licenses/gpl.html
 
 use strict;
