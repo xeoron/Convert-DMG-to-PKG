@@ -2,8 +2,8 @@
 #Author: Jason Campisi
 #Filename: install_convert_DMG-to-PKG_apps
 # Description: install apps bundle that make it easy to convert apps to DMG files.
-#Date: 11/23/2021
-#version 1.2.0 For MacOS X or higher
+#Date: 8/7/2024
+#version 1.2.1 For MacOS X or higher
 #Project: https://github.com/xeoron/Manage_Mosyle_MDM_MacOS
 #Released under the GPL v3 or higher
 
@@ -26,7 +26,7 @@ LOCATION="/opt/local/bin/"
 echo "installer for: $NAME1, $NAME2, $NAME3, $NAME4\n";
 
 echo " Checking for Perl at /usr/bin/perl ...";
-if [ "$(whereis perl)" != '/usr/bin/perl' ]; then
+if [ "$(whereis perl)"]; then
 	echo " Error: Perl can not be found.";
 	echo " ->If it is installed, then make a symlink that points /usr/bin/perl to the right location, else please install it.";
 	exit 1;
