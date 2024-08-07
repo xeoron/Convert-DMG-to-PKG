@@ -1,9 +1,10 @@
 #!/usr/bin/perl
 # Name: appBundleID.pl
 # Author: Jason Campisi
-# Date: 4/26/2021
+# Date: 8/7/2024
+# Version v1.0.1
 # Purpose: Tells you what a MacOS Application Bundle Identifier ID is
-# Repository: https://github.com/xeoron/Manage_Mosyle_MDM_MacOS
+# Repository: https://github.com/xeoron/Convert-DMG-to-PKG
 # License: Released under GPL v3 or higher. Details here http://www.gnu.org/licenses/gpl.html
 
 use strict;
