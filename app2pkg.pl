@@ -2,9 +2,9 @@
 # Name: app2pkg.pl
 # Author: Jason Campisi
 # Date: 7/18/2024
-# Version 1.1.2 
+# Version 1.1.3 
 # Purpose: Convert installed apps in the Applications folder to a pkg installer
-# Repository: https://github.com/xeoron/Manage_Mosyle_MDM_MacOS
+# Repository: https://github.com/xeoron/Convert-DMG-to-PKG
 # License: Released under GPL v3 or higher. Details here http://www.gnu.org/licenses/gpl.html
 
 
