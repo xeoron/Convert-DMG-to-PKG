@@ -50,8 +50,9 @@ app2pkg
 
 dmg2pkg
 ===============
-	Converts a mounted dmg installer file to a pkg MDM deplpoyment installer format to work with Mosyle.
-    This is a front end to pkgbuild to make the process less painful.
+	Converts a mounted dmg installer file to a pkg MDM deplpoyment installer format.
+    This is a front end to pkgbuild to make the process less painful. It requires a lot of info to work.
+    The hope is use the automation to make it easy or use the other tools to gather that info for yourself.
 
      List the Apps in /Applications/
        dmg2pkg -o
@@ -60,7 +61,7 @@ dmg2pkg
        dmg2pkg -n "/Volumes/VLC media player" -v 3.0.12 -id org.videolan.vlc -s -c VLC
             --> Creates VLC-3.0.12.pkg
 
-     Have it grather most of the information for you with a vlc-3.0.12-intel64.dmg mounted file
+     Have it gather most of the information for you with a vlc-3.0.12-intel64.dmg mounted file
        dmg2pkg -a -n /Volumes/VLC\ media\ player/
             --> Creates VLC-3.0.12.pkg
 
