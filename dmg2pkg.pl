@@ -2,7 +2,7 @@
 # Name: dmg2pkg.pl
 # Author: Jason Campisi
 # Date: 5/4/2021
-# Version: 1.2.0
+# Version: 1.2.1 
 # Purpose: Convert mounted dmg file into a pkg installer
 # Repository: https://github.com/xeoron/Manage_Mosyle_MDM_MacOS
 # License: Released under GPL v3 or higher. Details here http://www.gnu.org/licenses/gpl.html
@@ -66,7 +66,7 @@ Examples:
     dmg2pkg -n "/Volumes/VLC media player" -v 3.0.12 -id org.videolan.vlc -s -c VLC
         --> Creates VLC-3.0.12.pkg
 
-  Have it grather most of the information for you with a vlc-3.0.12-intel64.dmg mounted file
+  Have it gather most of the information for you with a vlc-3.0.12-intel64.dmg mounted file
     dmg2pkg -a -n /Volumes/VLC\ media\ player/
         --> Creates VLC-3.0.12.pkg
 
