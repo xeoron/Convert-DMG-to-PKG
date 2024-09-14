@@ -30,7 +30,7 @@ appVersion
 app2pkg 
 ===============
 	Converts an app program installed in /Applications/ to the pkg installer format.
-    It will ask to choose which app from a list and then making a pkg installer version.
+    It will ask to choose which app from a list and then make a pkg installer version.
     This is a front end to productbuild to make the process less painful.
 
     Convert installed apps in the Applications folder to a pkg installer
