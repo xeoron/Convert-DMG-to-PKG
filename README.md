@@ -57,7 +57,8 @@ dmg2pkg
      List the Apps in /Applications/
        dmg2pkg -o
   
-     Exampple: For best results, provide all the informaiton requred with vlc-3.0.12-intel64.dmg mounted file.
+     Example: For best results, provide all the informaiton required. 
+     For instance with a vlc-3.0.12-intel64.dmg mounted file.
        dmg2pkg -n "/Volumes/VLC media player" -v 3.0.12 -id org.videolan.vlc -s -c VLC
             --> Creates VLC-3.0.12.pkg
 
